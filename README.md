@@ -11,7 +11,7 @@ gem "doorkeeper_scopes_per_flow"
 ```
 And then run `bundle` (note: `doorkeeper` should already be in your Gemfile)
 
-Next, add the field as follows in your `config/initializers/doorkeeper.rb`
+Next specify default scopes and allowed flows per scope in `config/initializers/doorkeeper.rb`:
 
 ```ruby
 default_scopes  :public
