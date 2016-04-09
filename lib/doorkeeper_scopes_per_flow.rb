@@ -1,0 +1,2 @@
+module DoorkeeperScopesPerFlow
+end
