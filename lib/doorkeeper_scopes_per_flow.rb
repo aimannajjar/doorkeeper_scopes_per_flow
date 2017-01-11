@@ -40,7 +40,7 @@ module Doorkeeper
       fail Errors::MissingRequestStrategy unless grant_or_request_type.present?
       fail NameError unless available.include?(grant_or_request_type.to_s)
       if !scopes_flows_whitelist.nil?
-        scopes.split(" ").each do |scope|
+        scopes.nil? || scopes.split(" ").each do |scope|
           scope = scope.to_sym
           fail Errors::DoorkeeperError, "Specified scope not allowed" unless scopes_flows_whitelist.has_key?(scope)
           fail Errors::DoorkeeperError, "Scope '#{scope}' not allowed for '#{grant_or_request_type}' grant_type" unless (scopes_flows_whitelist[scope].include?(grant_or_request_type.to_sym) or scopes_flows_whitelist[scope].include?(:all))
