@@ -30,6 +30,13 @@ module Doorkeeper
 
   module Request
     module_function
+
+    def authorization_strategy(response_type, scopes)
+      get_strategy response_type, authorization_response_types, scopes
+    rescue NameError
+      raise Errors::InvalidAuthorizationStrategy
+    end
+
     def token_strategy(grant_type, scopes)
       get_strategy grant_type, token_grant_types, scopes
     rescue NameError
@@ -58,6 +65,11 @@ module Doorkeeper
     attr_accessor :context
     def token_request(strategy, scopes=nil)
       klass = Request.token_strategy strategy, scopes
+      klass.new self
+    end
+
+    def authorization_request(strategy, scopes=nil)
+      klass = Request.authorization_strategy strategy, scopes
       klass.new self
     end
   end
