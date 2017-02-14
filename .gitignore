@@ -1,3 +1,5 @@
+.gitignore
+.rvmrc*
 .bundle/
 log/*.log
 pkg/
