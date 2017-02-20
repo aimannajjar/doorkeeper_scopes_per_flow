@@ -30,6 +30,13 @@ module Doorkeeper
 
   module Request
     module_function
+
+    def authorization_strategy(response_type, scopes)
+      get_strategy response_type, authorization_response_types, scopes
+    rescue NameError
+      raise Errors::InvalidAuthorizationStrategy
+    end
+
     def token_strategy(grant_type, scopes)
       get_strategy grant_type, token_grant_types, scopes
     rescue NameError
@@ -40,7 +47,7 @@ module Doorkeeper
       fail Errors::MissingRequestStrategy unless grant_or_request_type.present?
       fail NameError unless available.include?(grant_or_request_type.to_s)
       if !scopes_flows_whitelist.nil?
-        scopes.split(" ").each do |scope|
+        scopes.nil? || scopes.split(" ").each do |scope|
           scope = scope.to_sym
           fail Errors::DoorkeeperError, "Specified scope not allowed" unless scopes_flows_whitelist.has_key?(scope)
           fail Errors::DoorkeeperError, "Scope '#{scope}' not allowed for '#{grant_or_request_type}' grant_type" unless (scopes_flows_whitelist[scope].include?(grant_or_request_type.to_sym) or scopes_flows_whitelist[scope].include?(:all))
@@ -58,6 +65,11 @@ module Doorkeeper
     attr_accessor :context
     def token_request(strategy, scopes=nil)
       klass = Request.token_strategy strategy, scopes
+      klass.new self
+    end
+
+    def authorization_request(strategy, scopes=nil)
+      klass = Request.authorization_strategy strategy, scopes
       klass.new self
     end
   end
