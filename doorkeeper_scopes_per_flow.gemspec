@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 5"
-  s.add_dependency 'doorkeeper', '~> 4'
+  s.add_dependency "rails", '>=4', '<6'
+  s.add_dependency 'doorkeeper', '>=3.1', '<5'
   s.add_dependency 'activesupport-decorators', '~> 2.1'
 end
